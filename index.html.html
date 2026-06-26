@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedika Gurjar — Portfolio</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#050810;
+    --glass:rgba(255,255,255,0.04);
+    --glass-border:rgba(255,255,255,0.10);
+    --glass-hover:rgba(255,255,255,0.08);
+    --accent:#7C6FFF;
+    --accent2:#00D4B4;
+    --accent3:#FF6B9D;
+    --text:#F0F0FF;
+    --muted:rgba(240,240,255,0.5);
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden;min-height:100vh;}
+  canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+  .content{position:relative;z-index:1}
+
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:1.2rem 3rem;
+    background:rgba(5,8,16,0.6);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--glass-border);
+  }
+  .logo{font-size:1.1rem;font-weight:700;letter-spacing:0.05em;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;letter-spacing:0.05em;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--text)}
+
+  section{padding:6rem 3rem 4rem;display:flex;align-items:center;justify-content:center}
+
+  /* HERO */
+  .hero{min-height:100vh;flex-direction:column;text-align:center}
+  .roles-row{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:2rem;animation:fadeUp 0.8s ease both;}
+  .role-badge{
+    display:inline-flex;align-items:center;gap:0.4rem;
+    border-radius:100px;padding:0.35rem 0.9rem;
+    font-size:0.75rem;font-weight:600;letter-spacing:0.06em;
+  }
+  .rb-purple{background:rgba(124,111,255,0.15);border:1px solid rgba(124,111,255,0.35);color:#A89CFF;}
+  .rb-teal{background:rgba(0,212,180,0.12);border:1px solid rgba(0,212,180,0.3);color:#00D4B4;}
+  .rb-pink{background:rgba(255,107,157,0.12);border:1px solid rgba(255,107,157,0.3);color:#FF6B9D;}
+  .rb-amber{background:rgba(255,179,71,0.12);border:1px solid rgba(255,179,71,0.3);color:#FFB347;}
+  .dot{width:5px;height:5px;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}
+  .d-purple{background:#A89CFF}
+  .d-teal{background:#00D4B4}
+  .d-pink{background:#FF6B9D}
+  .d-amber{background:#FFB347}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+  h1.hero-name{font-size:clamp(3rem,8vw,6rem);font-weight:800;line-height:1;letter-spacing:-0.03em;margin-bottom:0.5rem;animation:fadeUp 0.8s 0.1s ease both;}
+  .gradient-text{background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 50%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .hero-role{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--muted);margin-bottom:2rem;font-weight:300;letter-spacing:0.02em;animation:fadeUp 0.8s 0.2s ease both;}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;margin-bottom:2.5rem;animation:fadeUp 0.8s 0.3s ease both;}
+  .tag{background:var(--glass);border:1px solid var(--glass-border);border-radius:100px;padding:0.3rem 0.9rem;font-size:0.78rem;color:var(--muted);}
+  .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.8s 0.4s ease both;}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:100px;padding:0.75rem 2rem;font-size:0.9rem;font-weight:600;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,111,255,0.4)}
+  .btn-ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--text);border-radius:100px;padding:0.75rem 2rem;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;backdrop-filter:blur(10px);}
+  .btn-ghost:hover{background:var(--glass-hover);transform:translateY(-2px)}
+
+  /* ABOUT */
+  .about{flex-direction:column;max-width:900px;margin:0 auto;width:100%}
+  .section-label{font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;font-weight:600;}
+  h2.section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:2rem;letter-spacing:-0.02em}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+  .glass-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:1.75rem;transition:transform 0.3s,border-color 0.3s,background 0.3s;position:relative;overflow:hidden;}
+  .glass-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(124,111,255,0.08),transparent 70%);pointer-events:none;}
+  .glass-card:hover{transform:translateY(-4px);border-color:rgba(124,111,255,0.3);background:var(--glass-hover);}
+  .card-icon{font-size:1.8rem;margin-bottom:0.75rem}
+  .card-title{font-size:0.95rem;font-weight:600;margin-bottom:0.4rem;color:var(--text)}
+  .card-desc{font-size:0.83rem;color:var(--muted);line-height:1.6}
+  .about-bio{grid-column:1/-1;font-size:1rem;color:var(--muted);line-height:1.8;}
+  .about-bio strong{color:var(--text)}
+
+  /* PROJECTS */
+  .projects{flex-direction:column;max-width:1100px;margin:0 auto;width:100%}
+  .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  .project-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:1.75rem;transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;cursor:pointer;}
+  .project-card::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent 0deg,rgba(124,111,255,0.05) 60deg,transparent 120deg);animation:spin 8s linear infinite;pointer-events:none;opacity:0;transition:opacity 0.3s;}
+  .project-card:hover::after{opacity:1}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .project-card:hover{transform:translateY(-6px);border-color:rgba(124,111,255,0.4);box-shadow:0 20px 60px rgba(124,111,255,0.15);}
+  .project-card.featured{grid-column:1/-1}
+  .project-accent{width:40px;height:4px;border-radius:2px;margin-bottom:1.2rem;}
+  .p1{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .p2{background:linear-gradient(90deg,var(--accent2),#00A8FF)}
+  .p3{background:linear-gradient(90deg,var(--accent3),var(--accent))}
+  .p4{background:linear-gradient(90deg,#FFB347,var(--accent3))}
+  .project-title{font-size:1.05rem;font-weight:700;margin-bottom:0.5rem}
+  .project-sponsor{font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.75rem;font-weight:600;}
+  .project-desc{font-size:0.83rem;color:var(--muted);line-height:1.6;margin-bottom:1.2rem}
+  .project-stat{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(124,111,255,0.1);border:1px solid rgba(124,111,255,0.2);border-radius:100px;padding:0.25rem 0.75rem;font-size:0.75rem;color:var(--accent);font-weight:600;margin-bottom:1rem;}
+  .tech-chips{display:flex;flex-wrap:wrap;gap:0.4rem}
+  .chip{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:0.2rem 0.6rem;font-size:0.7rem;color:var(--muted);}
+  .project-link{margin-top:1.2rem;display:inline-flex;align-items:center;gap:0.4rem;color:var(--accent);font-size:0.8rem;font-weight:600;text-decoration:none;transition:gap 0.2s;}
+  .project-link:hover{gap:0.7rem}
+
+  /* SKILLS - horizontal wrap */
+  .skills{flex-direction:column;max-width:900px;margin:0 auto;width:100%}
+  .skills-wrap{display:flex;flex-wrap:wrap;gap:0.5rem}
+  .skill-category{margin-bottom:1.5rem}
+  .skill-cat-label{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.6rem;}
+  .sc1{color:var(--accent)}
+  .sc2{color:var(--accent2)}
+  .sc3{color:var(--accent3)}
+  .sc4{color:#FFB347}
+  .skill-pill{background:var(--glass);border:1px solid var(--glass-border);border-radius:100px;padding:0.35rem 0.85rem;font-size:0.8rem;color:var(--muted);transition:all 0.2s;}
+  .skill-pill:hover{color:var(--text);border-color:rgba(124,111,255,0.4);background:var(--glass-hover);}
+
+  /* CONTACT */
+  .contact{flex-direction:column;max-width:700px;margin:0 auto;width:100%;text-align:center}
+  .contact-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:24px;padding:3rem;margin-top:2rem;position:relative;overflow:hidden;}
+  .contact-card::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(124,111,255,0.1),transparent 70%);pointer-events:none;}
+  .contact-links{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem}
+  .contact-link{display:flex;align-items:center;gap:0.5rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:100px;padding:0.6rem 1.25rem;color:var(--muted);text-decoration:none;font-size:0.85rem;transition:all 0.2s;}
+  .contact-link:hover{color:var(--text);border-color:rgba(124,111,255,0.4);background:var(--glass-hover);transform:translateY(-2px);}
+  .contact-email{font-size:1.1rem;font-weight:600;margin:1rem 0;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+  footer{text-align:center;padding:2rem;font-size:0.78rem;color:rgba(240,240,255,0.25);border-top:1px solid var(--glass-border);}
+
+  @media(max-width:650px){
+    nav{padding:1rem 1.5rem}.nav-links{gap:1rem}
+    section{padding:5rem 1.5rem 3rem}
+    .about-grid{grid-template-columns:1fr}.about-bio{grid-column:1}
+    .projects-grid{grid-template-columns:1fr}.project-card.featured{grid-column:1}
+  }
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="content">
+  <nav>
+    <div class="logo">VG</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="roles-row">
+      <span class="role-badge rb-purple"><span class="dot d-purple"></span>AI / ML Engineer</span>
+      <span class="role-badge rb-teal"><span class="dot d-teal"></span>Full-Stack Developer</span>
+      <span class="role-badge rb-pink"><span class="dot d-pink"></span>NLP Specialist</span>
+      <span class="role-badge rb-amber"><span class="dot d-amber"></span>Open to Remote &amp; Global Roles</span>
+    </div>
+    <h1 class="hero-name"><span class="gradient-text">Vedika</span><br>Gurjar</h1>
+    <p class="hero-role">Building intelligent systems · Python · NLP · React · GenAI</p>
+    <div class="hero-tags">
+      <span class="tag">Speech Recognition</span>
+      <span class="tag">LLMs &amp; BART</span>
+      <span class="tag">Flask &amp; Spring Boot</span>
+      <span class="tag">Published Research</span>
+      <span class="tag">Microsoft Certified</span>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View my work</a>
+      <a href="#contact" class="btn-ghost">Get in touch</a>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="section-label">About me</div>
+    <h2 class="section-title">Builder. Researcher. <span class="gradient-text">Problem solver.</span></h2>
+    <div class="about-grid">
+      <div class="about-bio">
+        I'm a 2026 Computer Science graduate from <strong>HVPM College of Engineering, Amravati</strong> with hands-on experience building AI-powered systems, NLP pipelines, and full-stack applications. During my internship at <strong>Abhimanyu Technologies, Pune</strong>, I built an Automated Meeting Tracking System processing 100+ hours of audio/video data with 88% accuracy. I've published research in <strong>IJIRID-2026</strong> and hold certifications from Microsoft and NVIDIA. I'm targeting product-oriented and remote-first companies where I can build things that actually matter.
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">🎓</div>
+        <div class="card-title">Education</div>
+        <div class="card-desc">B.E. Computer Science<br>HVPM CoE, Amravati · 2022–2026</div>
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">💼</div>
+        <div class="card-title">Experience</div>
+        <div class="card-desc">Software Engineer Intern<br>Abhimanyu Technologies, Pune · Jan–Apr 2026</div>
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">📄</div>
+        <div class="card-title">Published Research</div>
+        <div class="card-desc">College ERP System — Design &amp; Implementation<br>IJIRID-2026</div>
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">🏅</div>
+        <div class="card-title">Certifications</div>
+        <div class="card-desc">Microsoft AI Fundamentals · Power BI<br>NVIDIA: AI on Jetson Nano</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" id="projects">
+    <div class="section-label">Featured work</div>
+    <h2 class="section-title">Projects that <span class="gradient-text">shipped.</span></h2>
+    <div class="projects-grid">
+
+      <div class="project-card featured">
+        <div class="project-accent p1"></div>
+        <div class="project-sponsor">Sponsored · The Bombay Forum</div>
+        <div class="project-title">AI-Powered News Summarization &amp; Web Scraping System</div>
+        <div class="project-desc">Automated research pipeline using BeautifulSoup and BART (LLM-based summarization) to extract, analyse, and synthesise large volumes of unstructured web data into structured HTML intelligence reports.</div>
+        <div class="project-stat">⚡ 85% reduction in manual research effort · 90% retrieval accuracy</div>
+        <div class="tech-chips">
+          <span class="chip">Python</span><span class="chip">BART</span><span class="chip">BeautifulSoup</span><span class="chip">NLP</span><span class="chip">Flask</span><span class="chip">HTML Reports</span>
+        </div>
+        <a href="https://github.com/vedika-smiles" target="_blank" class="project-link">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-accent p2"></div>
+        <div class="project-sponsor">Internship · Abhimanyu Technologies</div>
+        <div class="project-title">Automated Meeting Tracking System</div>
+        <div class="project-desc">End-to-end NLP and Speech Recognition pipeline to process 100+ hours of meeting audio/video, extract key action items, decisions, and process gaps. Deployed across 15+ internal teams.</div>
+        <div class="project-stat">🎯 88% extraction accuracy</div>
+        <div class="tech-chips">
+          <span class="chip">Speech Recognition</span><span class="chip">NLP</span><span class="chip">Python</span><span class="chip">FFmpeg</span><span class="chip">Kafka</span>
+        </div>
+        <a href="https://github.com/vedika-smiles" target="_blank" class="project-link">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-accent p3"></div>
+        <div class="project-sponsor">Academic Research</div>
+        <div class="project-title">Deep Learning Groundwater Level Prediction</div>
+        <div class="project-desc">LSTM and CNN models trained on real-time datasets from 500+ monitoring wells across multiple variables — rainfall, hydrogeology, and land use — for accurate groundwater level forecasting.</div>
+        <div class="project-stat">📈 15–20% improvement in prediction accuracy</div>
+        <div class="tech-chips">
+          <span class="chip">LSTM</span><span class="chip">CNN</span><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">Power BI</span>
+        </div>
+        <a href="https://github.com/vedika-smiles" target="_blank" class="project-link">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-accent p4"></div>
+        <div class="project-sponsor">Published · IJIRID-2026</div>
+        <div class="project-title">College ERP System</div>
+        <div class="project-desc">Full-stack ERP platform serving 120+ users with role-based access control, built with React.js, Node.js, REST APIs, and MySQL. Research paper published in IJIRID-2026: "Design and Implementation of Role-Based College ERP System."</div>
+        <div class="project-stat">👥 120+ active users · Research published</div>
+        <div class="tech-chips">
+          <span class="chip">React.js</span><span class="chip">Node.js</span><span class="chip">MySQL</span><span class="chip">REST APIs</span><span class="chip">Role-Based Auth</span>
+        </div>
+        <a href="https://github.com/vedika-smiles" target="_blank" class="project-link">View on GitHub →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="skills" id="skills">
+    <div class="section-label">Technical stack</div>
+    <h2 class="section-title">What I <span class="gradient-text">build with.</span></h2>
+
+    <div class="skill-category">
+      <div class="skill-cat-label sc1">AI &amp; Machine Learning</div>
+      <div class="skills-wrap">
+        <span class="skill-pill">NLP</span>
+        <span class="skill-pill">Speech Recognition</span>
+        <span class="skill-pill">LSTM</span>
+        <span class="skill-pill">CNN</span>
+        <span class="skill-pill">BART</span>
+        <span class="skill-pill">GenAI &amp; LLMs</span>
+        <span class="skill-pill">HuggingFace</span>
+        <span class="skill-pill">Scikit-learn</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-cat-label sc2">Languages &amp; Backend</div>
+      <div class="skills-wrap">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">Java</span>
+        <span class="skill-pill">Flask</span>
+        <span class="skill-pill">Spring Boot</span>
+        <span class="skill-pill">SQL</span>
+        <span class="skill-pill">REST APIs</span>
+        <span class="skill-pill">Kafka</span>
+        <span class="skill-pill">FFmpeg</span>
+        <span class="skill-pill">MySQL</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-cat-label sc3">Frontend</div>
+      <div class="skills-wrap">
+        <span class="skill-pill">React.js</span>
+        <span class="skill-pill">Next.js</span>
+        <span class="skill-pill">HTML</span>
+        <span class="skill-pill">CSS</span>
+        <span class="skill-pill">JavaScript</span>
+        <span class="skill-pill">Node.js</span>
+        <span class="skill-pill">BeautifulSoup</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-cat-label sc4">Tools &amp; Certifications</div>
+      <div class="skills-wrap">
+        <span class="skill-pill">Power BI ✦ Microsoft</span>
+        <span class="skill-pill">Microsoft AI Fundamentals</span>
+        <span class="skill-pill">NVIDIA Jetson Nano</span>
+        <span class="skill-pill">Git &amp; GitHub</span>
+        <span class="skill-pill">Microsoft Excel</span>
+        <span class="skill-pill">PowerPoint</span>
+        <span class="skill-pill">Agile</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Let's <span class="gradient-text">build something.</span></h2>
+    <div class="contact-card">
+      <p style="color:var(--muted);font-size:0.95rem;line-height:1.7">Open to remote roles, product company positions, and global opportunities. If you're building something interesting in AI, NLP, or full-stack — let's talk.</p>
+      <div class="contact-email">vedikagurjar03@gmail.com</div>
+      <div class="contact-links">
+        <a href="mailto:vedikagurjar03@gmail.com" class="contact-link">✉️ Email me</a>
+        <a href="https://linkedin.com/in/vedika-gurjar-b84290300" target="_blank" class="contact-link">💼 LinkedIn</a>
+        <a href="https://github.com/vedika-smiles" target="_blank" class="contact-link">🐙 GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>Built with care · Vedika Gurjar · 2026</footer>
+</div>
+
+<script>
+const canvas=document.getElementById('bg');
+const ctx=canvas.getContext('2d');
+let W,H,particles=[],mouseX=0,mouseY=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
+const COLORS=['rgba(124,111,255,','rgba(0,212,180,','rgba(255,107,157,'];
+class Particle{
+  constructor(){this.reset()}
+  reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.5+0.3;this.vx=(Math.random()-0.5)*0.3;this.vy=(Math.random()-0.5)*0.3;this.color=COLORS[Math.floor(Math.random()*3)];this.alpha=Math.random()*0.5+0.1;this.life=Math.random()*200+100;this.maxLife=this.life;}
+  update(){const dx=mouseX-this.x,dy=mouseY-this.y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<200){this.vx+=dx/dist*0.02;this.vy+=dy/dist*0.02;}this.vx*=0.98;this.vy*=0.98;this.x+=this.vx;this.y+=this.vy;this.life--;if(this.life<=0||this.x<0||this.x>W||this.y<0||this.y>H)this.reset();}
+  draw(){const a=this.alpha*(this.life/this.maxLife);ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=this.color+a+')';ctx.fill();}
+}
+for(let i=0;i<120;i++)particles.push(new Particle());
+function drawConnections(){for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<100){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(124,111,255,${0.05*(1-dist/100)})`;ctx.lineWidth=0.5;ctx.stroke();}}}}
+function animate(){ctx.clearRect(0,0,W,H);drawConnections();particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animate);}
+animate();
+document.querySelectorAll('.glass-card,.project-card,.skill-pill').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const rect=card.getBoundingClientRect();
+    const x=(e.clientX-rect.left)/rect.width-0.5;
+    const y=(e.clientY-rect.top)/rect.height-0.5;
+    card.style.transform=`perspective(600px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-4px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});},{threshold:0.1});
+document.querySelectorAll('.glass-card,.project-card,.contact-card,.skill-category').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(30px)';el.style.transition='opacity 0.6s ease, transform 0.6s ease';obs.observe(el);});
+</script>
+</body>
+</html>
